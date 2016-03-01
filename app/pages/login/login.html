@@ -1,0 +1,53 @@
+
+<ion-navbar *navbar>
+  <button menuToggle *ngIf="isLoggedIn">
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <ion-title>Log In</ion-title>
+</ion-navbar>
+
+<ion-toolbar><ion-title>{{authDataProfileName}}</ion-title></ion-toolbar>
+
+<ion-content padding class="home">
+  <button danger [hidden]="isLoggedIn" (click)="signUpNewUser()" full *ngIf="showLoginEmail ? false : true">Sign Up</button>
+  <button [hidden]="isLoggedIn" (click)="openLoginEmail()" full *ngIf="signingUp ? false : true">Sign in with your Email</button>
+  <button [hidden]="isLoggedIn" (click)="authWithTwitter()" full *ngIf="signingUp || showLoginEmail ? false : true">Sign in with Twitter</button>
+  <!-- <button [hidden]="isLoggedIn"  (click)="authWithGoogle()" full>Sign in with Google</button> -->
+  <button [hidden]="isLoggedIn"  (click)="authWithFacebook()" full *ngIf="signingUp || showLoginEmail ? false : true">Sign in with Facebook</button>
+
+  <form [ngFormModel]="loginForm" (submit)="authWithEmail($event)" *ngIf="showLoginEmail && !isLoggedIn ? true : false">
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" ngControl="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" ngControl="password"></ion-input>
+    </ion-item>
+    <br>
+    <button type="submit" [disabled]="!loginForm.valid" block>Submit</button>
+  </form>
+
+  <form [ngFormModel]="signUpForm" (submit)="addNewUser($event)" *ngIf="signingUp && !isLoggedIn ? true : false">
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" ngControl="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" ngControl="password"></ion-input>
+    </ion-item>
+
+    <br>
+    <button type="submit" [disabled]="!signUpForm.valid" block>Submit</button>
+  </form>
+
+  <ion-card [hidden]="!isLoggedIn">
+    <ion-item>
+        <button primary danger full (click)="unauthWithTwitter()">
+            <icon ionic></icon>
+            <div><strong>Logout</strong></div>
+        </button>
+    </ion-item>
+  </ion-card>
+</ion-content>
